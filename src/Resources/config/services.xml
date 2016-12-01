@@ -1,0 +1,105 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="nassau.kunstmaanstaticsite.example.class">Nassau\KunstmaanStaticSiteBundle\Example</parameter>
+    </parameters>
+
+    <services>
+
+        <service class="Nassau\KunstmaanStaticSiteBundle\Service\Dumper\StaticSiteDumper" id="nassau.static_site.dumper">
+            <argument id="nassau_kunstmaan_static_site.service_response.chain_response_factory" type="service"/>
+        </service>
+
+        <service class="Nassau\KunstmaanStaticSiteBundle\Service\Response\ChainResponseFactory" id="nassau_kunstmaan_static_site.service_response.chain_response_factory" public="false">
+            <tag name="nassau.registry"
+                 tag="nassau.static_site.response_factory"
+                 order="priority"
+                 method="addFactory"
+                 class="Nassau\KunstmaanStaticSiteBundle\Service\Response\ResponseFactory"
+             />
+        </service>
+
+        <service class="Nassau\KunstmaanStaticSiteBundle\Service\Response\StaticFilesFactory" id="nassau_kunstmaan_static_site.service_response.static_files_factory" public="false">
+            <argument id="nassau.static_site.dumper.files" type="service"/>
+            <tag name="nassau.static_site.response_factory" priority="1024"/>
+        </service>
+        <service class="ArrayObject" public="false" id="nassau.static_site.dumper.files"/>
+
+        <service class="Nassau\KunstmaanStaticSiteBundle\Service\Response\KernelResponse\KernelResponseFactory" id="nassau_kunstmaan_static_site.service_response.kernel_response_factory" public="false">
+            <argument id="nassau.static_site.dumper.routes" type="service"/>
+            <argument id="nassau_kunstmaan_static_site.service_generator.path_provider" type="service"/>
+            <argument id="kernel" type="service"/>
+            <argument id="nassau_kunstmaan_static_site.service_response.request_factory" type="service"/>
+            <tag name="nassau.static_site.response_factory" priority="512"/>
+        </service>
+        <service class="ArrayObject" public="false" id="nassau.static_site.dumper.routes"/>
+
+        <service class="Nassau\KunstmaanStaticSiteBundle\Service\Response\KernelResponse\RequestFactory" id="nassau_kunstmaan_static_site.service_response.request_factory">
+          <argument>%nassau.static_site.url_prefix%</argument>
+        </service>
+
+
+        <service class="Nassau\KunstmaanStaticSiteBundle\Service\Response\RedirectFactory" id="nassau_kunstmaan_static_site.service_response.redirect_factory" public="false">
+            <argument id="kunstmaan_redirect.repositories.redirect" type="service"/>
+            <tag name="nassau.static_site.response_factory" priority="256"/>
+        </service>
+
+
+        <service class="Nassau\KunstmaanStaticSiteBundle\Service\Response\KernelResponse\PathProvider" id="nassau_kunstmaan_static_site.service_generator.path_provider" public="false">
+            <argument id="router" type="service"/>
+            <argument id="nassau.static_site.generator_repository" type="service"/>
+        </service>
+
+
+        <service class="Nassau\KunstmaanStaticSiteBundle\Service\Generator\GeneratorRepository" id="nassau.static_site.generator_repository" public="false">
+            <tag name="nassau.registry"
+                 tag="nassau.static_site.generator"
+                 order="indexed"
+                 method="offsetSet"
+                 class="Nassau\KunstmaanStaticSiteBundle\Service\Generator\RouteParametersGenerator"
+            />
+        </service>
+
+        <service class="Nassau\KunstmaanStaticSiteBundle\Service\Generator\NodesGenerator" id="nassau_kunstmaan_static_site.service_generator.nodes_generator" public="false">
+            <argument id="ars_thanea_kunstmaan_extra.node_translation_repository" type="service"/>
+            <tag name="nassau.static_site.generator" alias="nodes"/>
+        </service>
+
+        <service class="Nassau\KunstmaanStaticSiteBundle\Service\Generator\LocalesGenerator" id="nassau_kunstmaan_static_site.service_generator.locales_generator" public="false">
+            <argument id="kunstmaan_admin.domain_configuration" type="service"/>
+            <tag name="nassau.static_site.generator" alias="locales"/>
+        </service>
+
+        <service class="Nassau\KunstmaanStaticSiteBundle\Service\Generator\StaticGenerator" id="nassau_kunstmaan_static_site.service_generator.single_item_generator" public="false">
+            <tag name="nassau.static_site.generator" alias=""/>
+        </service>
+
+        <service class="Nassau\KunstmaanStaticSiteBundle\Service\Generator\StaticGenerator" id="nassau_kunstmaan_static_site.service_generator.disabled_generator" public="false">
+            <argument type="collection"/>
+
+            <tag name="nassau.static_site.generator" alias="disabled"/>
+        </service>
+
+        <service id="nassau.static_site.storage" alias="nassau_kunstmaan_static_site.service_dumper.dsn_storage"/>
+
+        <service class="Nassau\KunstmaanStaticSiteBundle\Service\Dumper\DsnStorage" id="nassau_kunstmaan_static_site.service_dumper.dsn_storage" public="false">
+            <tag name="nassau.registry"
+                 tag="nassau.static_site.storage"
+                 order="indexed"
+                 method="addStorage"
+                 class="Nassau\KunstmaanStaticSiteBundle\Service\Dumper\Storage"
+            />
+        </service>
+
+
+        <service class="Nassau\KunstmaanStaticSiteBundle\Service\Dumper\FileSystemStorage" id="nassau_kunstmaan_static_site.service_dumper.file_system_storage">
+            <tag name="nassau.static_site.storage" alias="file"/>
+        </service>
+
+
+    </services>
+</container>

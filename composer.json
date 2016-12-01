@@ -1,0 +1,21 @@
+{
+    "name": "nassau/kunstmaan-static-site-bundle",
+    "description": "Export your Kunstmaan Bundles CMS website to static HTML files",
+    "type": "library",
+    "require": {
+        "nassau/registry-compiler": "^1.1",
+        "kunstmaan/bundles-cms": "^3.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Nassau\\KunstmaanStaticSiteBundle\\": "src"
+        }
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Maciej Łebkowski",
+            "email": "m.lebkowski@gmail.com"
+        }
+    ]
+}
