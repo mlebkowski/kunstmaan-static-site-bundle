@@ -1,11 +1,12 @@
 <?php
 
-namespace Nassau\KunstmaanStaticSiteBundle\Service\Response;
+namespace Nassau\KunstmaanStaticSiteBundle\Service\Response\StaticFiles;
 
 use Nassau\KunstmaanStaticSiteBundle\DependencyInjection\ValueObject\FilesSpecification;
+use Nassau\KunstmaanStaticSiteBundle\Service\Response\ResponseFactory;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
-use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
+use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesserInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 class StaticFilesFactory implements ResponseFactory
@@ -16,9 +17,15 @@ class StaticFilesFactory implements ResponseFactory
      */
     private $files;
 
-    public function __construct(\Traversable $files)
+    /**
+     * @var MimeTypeGuesserInterface
+     */
+    private $mimeTypeGuesser;
+
+    public function __construct(\Traversable $files, MimeTypeGuesserInterface $mimeTypeGuesser)
     {
         $this->files = $files;
+        $this->mimeTypeGuesser = $mimeTypeGuesser;
     }
 
 
@@ -44,7 +51,7 @@ class StaticFilesFactory implements ResponseFactory
                 $relativePath = $criteria->getTargetPath() . $file->getRelativePathname();
 
                 yield $relativePath => new Response($file->getContents(), Response::HTTP_OK, [
-                    'content-type' => MimeTypeGuesser::getInstance()->guess($file->getPathname())
+                    'content-type' => $this->mimeTypeGuesser->guess($file->getPathname())
                 ]);
             }
         }

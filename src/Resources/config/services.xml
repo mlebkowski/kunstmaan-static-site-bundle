@@ -23,11 +23,16 @@
              />
         </service>
 
-        <service class="Nassau\KunstmaanStaticSiteBundle\Service\Response\StaticFilesFactory" id="nassau_kunstmaan_static_site.service_response.static_files_factory" public="false">
+        <service class="Nassau\KunstmaanStaticSiteBundle\Service\Response\StaticFiles\StaticFilesFactory" id="nassau_kunstmaan_static_site.service_response.static_files_factory" public="false">
             <argument id="nassau.static_site.dumper.files" type="service"/>
+            <argument id="nassau.static_site.mime_type_guesser" type="service"/>
             <tag name="nassau.static_site.response_factory" priority="1024"/>
         </service>
         <service class="ArrayObject" public="false" id="nassau.static_site.dumper.files"/>
+
+        <service id="nassau.static_site.mime_type_guesser" class="Nassau\KunstmaanStaticSiteBundle\Service\Response\StaticFiles\MimeTypeGuesser" public="false">
+            <argument>%nassau.static_site.extensions%</argument>
+        </service>
 
         <service class="Nassau\KunstmaanStaticSiteBundle\Service\Response\KernelResponse\KernelResponseFactory" id="nassau_kunstmaan_static_site.service_response.kernel_response_factory" public="false">
             <argument id="nassau.static_site.dumper.routes" type="service"/>

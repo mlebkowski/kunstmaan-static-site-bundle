@@ -51,6 +51,20 @@ class KunstmaanStaticSiteExtension extends Extension
                 'robots' => [
                     'route' => 'KunstmaanSeoBundle_robots',
                 ]
+            ],
+            'extensions' => [
+                "css" => "text/css",
+                "js" => "text/javascript",
+                "svg" => "image/svg+xml",
+                "map" => "application/json",
+                "jpg" => "image/jpeg",
+                "jpeg" => "image/jpeg",
+                "png" => "image/png",
+                "ttf" => "font/ttf",
+                "otf" => "application/x-font-opentype",
+                "woff" => "application/font-woff",
+                "woff2" => "application/font-woff2",
+                "eot" => "application/vnd.ms-fontobject",
             ]
         ]);
 
@@ -60,6 +74,7 @@ class KunstmaanStaticSiteExtension extends Extension
         $loader->load('services.xml');
 
         $container->setParameter('nassau.static_site.url_prefix', $configs['url_prefix']);
+        $container->setParameter('nassau.static_site.extensions', $configs['extensions']);
         $this->configureRoutes($container, $configs['routes']);
         $this->configureFiles($container, $configs['files']);
     }

@@ -16,6 +16,8 @@ class Configuration implements ConfigurationInterface
 
         $rootNode->children()->scalarNode('url_prefix')->defaultValue('');
 
+        $rootNode->children()->arrayNode('extensions')->prototype('scalar');
+
         /** @var ArrayNodeDefinition $files */
         $files = $rootNode->children()->arrayNode('files')->prototype('array');
         $files->beforeNormalization()->ifNull()->then(function () {
