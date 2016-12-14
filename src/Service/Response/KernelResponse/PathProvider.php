@@ -2,6 +2,7 @@
 
 namespace Nassau\KunstmaanStaticSiteBundle\Service\Response\KernelResponse;
 
+use Nassau\KunstmaanStaticSiteBundle\Service\Generator\GeneratorRepository;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class PathProvider

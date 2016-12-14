@@ -3,6 +3,7 @@
 namespace Nassau\KunstmaanStaticSiteBundle\Service\Response\KernelResponse;
 
 use Nassau\KunstmaanStaticSiteBundle\DependencyInjection\ValueObject\RouteSpecification;
+use Nassau\KunstmaanStaticSiteBundle\Service\Response\ResponseFactory;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
