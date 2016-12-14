@@ -6,6 +6,7 @@
         "nassau/registry-compiler": "^1.1",
         "kunstmaan/bundles-cms": "^3.5"
     },
+    "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
             "Nassau\\KunstmaanStaticSiteBundle\\": "src"
